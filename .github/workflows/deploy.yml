@@ -46,7 +46,7 @@ jobs:
           alias getDigest="eval $(python digest.py)"
           getDigest          
           aws cloudformation deploy \
-            --stack-name mlops-bot \
+            --stack-name HardinDataCollection \
             --template-file template.yaml \
             --capabilities CAPABILITY_NAMED_IAM \
             --parameter-overrides Digest=$DIGEST
