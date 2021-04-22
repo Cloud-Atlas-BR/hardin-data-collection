@@ -10,7 +10,7 @@ Resources:
       Role: !GetAtt LambdaFunctionTweetsRole.Arn
       PackageType: Image
       Code:
-        ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/hardin-senado-votacoes@${DigestTweet}
+        ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/hardin-senado-votacoes@${Digest}
       Timeout: 30
   LambdaFunctionTweetsRole:
     Type: AWS::IAM::Role
