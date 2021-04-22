@@ -43,7 +43,8 @@ jobs:
         run: | 
           pip install boto3
           shopt -s expand_aliases
-          alias getDigest="eval $(python digest.py)" && getDigest          
+          alias getDigest="eval $(python digest.py)"
+          getDigest          
           aws cloudformation deploy \
             --stack-name mlops-bot \
             --template-file cloudformation.yaml \
