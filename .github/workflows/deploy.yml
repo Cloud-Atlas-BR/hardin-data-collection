@@ -47,6 +47,6 @@ jobs:
           getDigest          
           aws cloudformation deploy \
             --stack-name mlops-bot \
-            --template-file cloudformation.yaml \
+            --template-file template.yaml \
             --capabilities CAPABILITY_NAMED_IAM \
             --parameter-overrides Digest=$DIGEST
