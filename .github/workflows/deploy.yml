@@ -26,7 +26,7 @@ jobs:
 
       - name: Build and Push image to ECR repository
         env:
-          REPO_NAME: HardinSenadoVotacoes
+          REPO_NAME: hardin-senado-votacoes
         run: |
           aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
 
