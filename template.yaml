@@ -6,7 +6,7 @@ Resources:
   LambdaFunctionTweets:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: mlops-bot-tweets
+      FunctionName: HardinSenado
       Role: !GetAtt LambdaFunctionTweetsRole.Arn
       PackageType: Image
       Code:
@@ -26,7 +26,7 @@ Resources:
               - 'sts:AssumeRole'
       Path: /
       Policies:
-        - PolicyName: mlops-bot-tweets-policy
+        - PolicyName: hardin-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
