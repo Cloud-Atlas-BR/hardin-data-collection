@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  Digest:
+    Type: String
+Resources:
+  LambdaFunctionTweets:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: mlops-bot-tweets
+      Role: !GetAtt LambdaFunctionTweetsRole.Arn
+      PackageType: Image
+      Code:
+        ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/hardin-senado-votacoes@${DigestTweet}
+      Timeout: 30
+  LambdaFunctionTweetsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: mlops-bot-tweets-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - "cloudwatch:*"
+                  - "ec2:DescribeSecurityGroups"
+                  - "ec2:DescribeSubnets"
+                  - "ec2:DescribeVpcs"
+                  - "events:*"
+                  - "iam:GetPolicy"
+                  - "iam:GetPolicyVersion"
+                  - "iam:GetRole"
+                  - "iam:GetRolePolicy"
+                  - "iam:ListAttachedRolePolicies"
+                  - "iam:ListRolePolicies"
+                  - "iam:ListRoles"
+                  - "iam:PassRole"
+                  - "kms:ListAliases"
+                  - "lambda:*"
+                  - "logs:*"
+                  - "s3:*"
+                  - "secretsmanager:*"
+                  - "sns:ListSubscriptions"
+                  - "sns:ListSubscriptionsByTopic"
+                  - "sns:ListTopics"
+                  - "sns:Publish"
+                  - "sns:Subscribe"
+                  - "sns:Unsubscribe"
+                  - "sqs:ListQueues"
+                  - "sqs:SendMessage"
+                  - "tag:GetResources"
+                Resource: '*'
+      MaxSessionDuration: 3600
