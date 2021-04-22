@@ -1,49 +1,27 @@
 name: Lambda function deploy
-
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
-
-  build:
-
+  DockerBuild:
     runs-on: ubuntu-20.04
-
     steps:
-      
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
       - name: Build and Push image to ECR repository
         env:
           REPO_NAME: hardin-senado-votacoes
         run: |
           aws ecr describe-repositories --repository-names ${REPO_NAME} || aws ecr create-repository --repository-name ${REPO_NAME}
-
-
-      # - name: Build and Push image to ECR repository
-      #   run: |
-      #     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 977053370764.dkr.ecr.us-east-1.amazonaws.com
-      #     docker build -t ubiquitous-enigma .
-      #     docker tag ubiquitous-enigma:latest 977053370764.dkr.ecr.us-east-1.amazonaws.com/ubiquitous-enigma:latest
-      #     docker push 977053370764.dkr.ecr.us-east-1.amazonaws.com/ubiquitous-enigma:latest
-      # # - name: Update lambda container
-      # #   run: aws lambda update-function-code --function-name ubiquitous-enigma --image-uri 977053370764.dkr.ecr.us-east-1.amazonaws.com/ubiquitous-enigma:latest
-
-      # - name: Create or update lambda function
-      #   run: | 
-      #     aws cloudformation deploy \
-      #       --stack-name ubiquitous-enigma-lambda-stack \
-      #       --template-file infra/lambda.yml \
-      #       --parameter-overrides file://infra/parameters.json \
-      #       --capabilities CAPABILITY_NAMED_IAM
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+          cd lambdaTweet && docker build -t ${REPO_NAME} . && cd ..
+          docker tag ${REPO_NAME}:latest ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${REPO_NAME}:latest
+          docker push ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${REPO_NAME}:latest
