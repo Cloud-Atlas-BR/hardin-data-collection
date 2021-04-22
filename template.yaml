@@ -12,7 +12,7 @@ Resources:
       Code:
         ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/hardin-senado-votacoes@${Digest}
       Timeout: 30
-  LambdaFunctionTweetsRole:
+  LambdaFunctionHardinRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
