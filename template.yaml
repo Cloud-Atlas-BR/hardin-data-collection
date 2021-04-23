@@ -3,11 +3,12 @@ Parameters:
   Digest:
     Type: String
 Resources:
-  LambdaFunctionTweets:
+  LambdaFunctionHardinDataCollection:
+    DependsOn: LambdaFunctionHardinRole
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: HardinSenado
-      Role: !GetAtt LambdaFunctionTweetsRole.Arn
+      Role: !GetAtt LambdaFunctionHardinRole.Arn
       PackageType: Image
       Code:
         ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/hardin-senado-votacoes@${Digest}
